@@ -765,7 +765,7 @@
 
     <footer class="footer" id="footer">
     <img src="assets/MYs_logo_去背.png" alt="MYs Logo" class="footer-logo">
-      © Copyright 2025 MYs System-v1.0.4-02-03-2026-114
+      © Copyright 2025 MYs System-v1.0.4-02-02-2026-114
     </footer>
   </div>
 
@@ -842,21 +842,18 @@ async function submitData() {
     btn.textContent = "⏳ 資料傳送中，請稍後，請勿退出此介面";
     btn.disabled = true;
 
-    /* 強制精準對齊邏輯：不論選否或選是，都確保這 4 個欄位一定會發出資料 */
-    const isDepEnabled = ($("#depEnable").value === "是");
+    /* 處理眷屬邏輯：強制佔位機制 */
+    const depEnableInput = $("#depEnable").value;
+    const isDepEnabled = (depEnableInput === "是");
     
-    // 如果是「是」，抓輸入值；如果是「否」或是沒填，強制給 "-"
+    // 如果選「否」，確保後續 4 個欄位 (R, S, T, U) 都是 "-"，絕對不能跳過
     const depRelVal   = isDepEnabled ? ($("#depRel").value.trim() || "-") : "-";
     const depNameVal  = isDepEnabled ? ($("#depName").value.trim() || "-") : "-";
     const depNidVal   = isDepEnabled ? ($("#depNid").value.trim() || "-") : "-";
     const depBirthVal = isDepEnabled ? ($("#depBirth7").value.trim() || "-") : "-";
 
-    /* 收集資料 - 按照您指定的精確順序排列 (A-AB 共 28 欄) */
+    /* 收集資料 - 按照您的試算表「勞工名卡」分頁 A-AB 精確對齊 */
     const payload = {
-        /* 表單元數據 (這兩項通常寫入前兩欄或由 GAS 處理) */
-        formType: "nameCard", 
-        createdAt: FORM_META.createdAt ? fmtTW(FORM_META.createdAt) : '',
-        
         /* A~E 欄：工作相關 */
         company:    $("#company").value,
         team:       $("#team").value,
@@ -864,34 +861,40 @@ async function submitData() {
         startDate:  $("#startDate").value,
         wage:       $("#wage").value,
         
-        /* F~P 欄：個人資訊 (注意：手機提前、原民後移) */
+        /* F~H 欄：基本身分 */
         fullName:   $("#fullName").value,
         gender:     $("#gender").value,
         nid:        $("#nid").value,
+        
+        /* I~K 欄：生日、手機、出生地 */
         birthRoc7:  $("#birthRoc7").value,
-        mobile:     $("#mobile").value,       /* J 欄 */
+        mobile:     $("#mobile").value,       
         birthPlace: $("#birthPlace").value,
+        
+        /* L~N 欄：戶籍、居住、原民 */
         addrHouse:  $("#addrHouse").value,
         addrLive:   $("#addrLive").value,
-        indigenous: $("#indigenous").value,   /* N 欄 */
+        indigenous: $("#indigenous").value,   
+        
+        /* O~P 欄：Gmail、學歷 */
         gmail:      $("#gmail").value,
         edu:        $("#edu").value,
         
-        /* Q~U 欄：眷屬資訊 (核心位移修正區) */
-        depEnable:  $("#depEnable").value,    /* Q 欄 */
-        depRel:     depRelVal,                /* R 欄 (若否則填 -) */
-        depName:    depNameVal,               /* S 欄 (若否則填 -) */
-        depNid:     depNidVal,                /* T 欄 (若否則填 -) */
-        depBirth7:  depBirthVal,              /* U 欄 (若否則填 -) */
+        /* Q~U 欄：眷屬資訊 (重點區域：共 5 格) */
+        depEnable:  depEnableInput,    /* Q 欄 */
+        depRel:     depRelVal,         /* R 欄 */
+        depName:    depNameVal,        /* S 欄 */
+        depNid:     depNidVal,         /* T 欄 */
+        depBirth7:  depBirthVal,       /* U 欄 (原本位移點) */
 
-        /* V~Z 欄：緊急連絡人 */
+        /* V~Z 欄：緊急連絡人 (V 欄開始) */
         emgName:    $("#emgName").value,      /* V 欄 */
         emgRel:     $("#emgRel").value,       /* W 欄 */
-        homePhone:  $("#homePhone").value,     /* X 欄 */
+        homePhone:  $("#homePhone").value,    /* X 欄 */
         emgMobile:  $("#emgMobile").value,    /* Y 欄 */
         emgAddr:    $("#emgAddr").value,      /* Z 欄 */
         
-        /* AA~AB 欄：檔案連結 */
+        /* AA~AB 欄：圖檔連結 */
         fileFront: null, 
         fileBack: null
     };
