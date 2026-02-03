@@ -94,7 +94,7 @@
     -moz-osx-font-smoothing: grayscale;
     touch-action: pan-y;              /* 僅允許垂直滑動 */
     overscroll-behavior-y: contain;   /* 抑制彈性回彈干擾 */
-    background: #000;                 /* 背景底色 */
+    background: #000;                  /* 背景底色 */
   }
 
   /* 面板（上下貼齊、內容內捲、固定底部操作列 + 頁尾） */
@@ -291,14 +291,14 @@
             background: rgba(0,0,0,0.75);
             display: flex;
             align-items: center;
-            justify-content: center;border-radius
+            justify-content: center;
         }
 
         .gate-card {
             width: min(520px, 92vw);
             background: rgba(30,30,30,0.95);
             border: 1px solid var(--border);
-            : 16px;
+            border-radius: 16px;
             padding: 20px;
             box-shadow: 0 10px 30px rgba(0,0,0,.45);
         }
@@ -765,7 +765,7 @@
 
     <footer class="footer" id="footer">
     <img src="assets/MYs_logo_去背.png" alt="MYs Logo" class="footer-logo">
-      © Copyright 2025 MYs System-v1.0.3-12-06-2025-114
+      © Copyright 2025 MYs System-v1.1.3-02-03-2026-114
     </footer>
   </div>
 
@@ -842,43 +842,46 @@ async function submitData() {
     btn.textContent = "⏳ 資料傳送中，請稍後，請勿退出此介面";
     btn.disabled = true;
 
-    /* 收集資料 */
+    /* 收集資料 - 按照您指定的精確順序排列 */
     const payload = {
         formType: "nameCard", 
         createdAt: FORM_META.createdAt ? fmtTW(FORM_META.createdAt) : '',
         
+        /* 1. 公司資訊區 */
         company:    $("#company").value,
         team:       $("#team").value,
         workType:   $("#workType").value,
         startDate:  $("#startDate").value,
         wage:       $("#wage").value,
         
+        /* 2. 個人基本資訊區 */
         fullName:   $("#fullName").value,
         gender:     $("#gender").value,
         nid:        $("#nid").value,
-        indigenous: $("#indigenous").value,
-        
         birthRoc7:  $("#birthRoc7").value,
+        mobile:     $("#mobile").value,       /* 手機提前到出生地前 */
         birthPlace: $("#birthPlace").value,
         addrHouse:  $("#addrHouse").value,
         addrLive:   $("#addrLive").value,
-        
+        indigenous: $("#indigenous").value,   /* 原民後移到居住地址後 */
         gmail:      $("#gmail").value,
-        mobile:     $("#mobile").value,
         edu:        $("#edu").value,
         
+        /* 3. 眷屬資訊區 */
         depEnable:  $("#depEnable").value,
         depRel:     $("#depRel").value,
         depName:    $("#depName").value,
         depNid:     $("#depNid").value,
         depBirth7:  $("#depBirth7")?.value || "", 
 
+        /* 4. 緊急連絡人區 */
         emgName:    $("#emgName").value,
         emgRel:     $("#emgRel").value,
         homePhone:  $("#homePhone").value,
         emgMobile:  $("#emgMobile").value,
         emgAddr:    $("#emgAddr").value,
         
+        /* 5. 檔案連結區 */
         fileFront: null, 
         fileBack: null
     };
