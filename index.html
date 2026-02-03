@@ -842,46 +842,53 @@ async function submitData() {
     btn.textContent = "⏳ 資料傳送中，請稍後，請勿退出此介面";
     btn.disabled = true;
 
+    /* 處理眷屬邏輯：若為「否」，則補上 "-" 佔位，防止欄位位移 */
+    const isDepEnabled = ($("#depEnable").value === "是");
+    const depRelVal   = isDepEnabled ? ($("#depRel").value.trim() || "-") : "-";
+    const depNameVal  = isDepEnabled ? ($("#depName").value.trim() || "-") : "-";
+    const depNidVal   = isDepEnabled ? ($("#depNid").value.trim() || "-") : "-";
+    const depBirthVal = isDepEnabled ? ($("#depBirth7").value.trim() || "-") : "-";
+
     /* 收集資料 - 按照您指定的精確順序排列 */
     const payload = {
         formType: "nameCard", 
         createdAt: FORM_META.createdAt ? fmtTW(FORM_META.createdAt) : '',
         
-        /* 1. 公司資訊區 */
+        /* 1. 公司資訊區 (A-E) */
         company:    $("#company").value,
         team:       $("#team").value,
         workType:   $("#workType").value,
         startDate:  $("#startDate").value,
         wage:       $("#wage").value,
         
-        /* 2. 個人基本資訊區 */
+        /* 2. 個人基本資訊區 (F-P) */
         fullName:   $("#fullName").value,
         gender:     $("#gender").value,
         nid:        $("#nid").value,
         birthRoc7:  $("#birthRoc7").value,
-        mobile:     $("#mobile").value,       /* 手機提前到出生地前 */
+        mobile:     $("#mobile").value,       
         birthPlace: $("#birthPlace").value,
         addrHouse:  $("#addrHouse").value,
         addrLive:   $("#addrLive").value,
-        indigenous: $("#indigenous").value,   /* 原民後移到居住地址後 */
+        indigenous: $("#indigenous").value,   
         gmail:      $("#gmail").value,
         edu:        $("#edu").value,
         
-        /* 3. 眷屬資訊區 */
+        /* 3. 眷屬資訊區 (Q-U) - 強制佔位防止位移 */
         depEnable:  $("#depEnable").value,
-        depRel:     $("#depRel").value,
-        depName:    $("#depName").value,
-        depNid:     $("#depNid").value,
-        depBirth7:  $("#depBirth7")?.value || "", 
+        depRel:     depRelVal,
+        depName:    depNameVal,
+        depNid:     depNidVal,
+        depBirth7:  depBirthVal,
 
-        /* 4. 緊急連絡人區 */
+        /* 4. 緊急連絡人區 (V-Z) */
         emgName:    $("#emgName").value,
         emgRel:     $("#emgRel").value,
         homePhone:  $("#homePhone").value,
         emgMobile:  $("#emgMobile").value,
         emgAddr:    $("#emgAddr").value,
         
-        /* 5. 檔案連結區 */
+        /* 5. 檔案連結區 (AA-AB) */
         fileFront: null, 
         fileBack: null
     };
