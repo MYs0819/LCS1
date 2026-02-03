@@ -842,59 +842,46 @@ async function submitData() {
     btn.textContent = "⏳ 資料傳送中，請稍後，請勿退出此介面";
     btn.disabled = true;
 
-    /* 處理眷屬邏輯：強制佔位機制 */
-    const depEnableInput = $("#depEnable").value;
-    const isDepEnabled = (depEnableInput === "是");
-    
-    // 如果選「否」，確保後續 4 個欄位 (R, S, T, U) 都是 "-"，絕對不能跳過
-    const depRelVal   = isDepEnabled ? ($("#depRel").value.trim() || "-") : "-";
-    const depNameVal  = isDepEnabled ? ($("#depName").value.trim() || "-") : "-";
-    const depNidVal   = isDepEnabled ? ($("#depNid").value.trim() || "-") : "-";
-    const depBirthVal = isDepEnabled ? ($("#depBirth7").value.trim() || "-") : "-";
-
-    /* 收集資料 - 按照您的試算表「勞工名卡」分頁 A-AB 精確對齊 */
+    /* 收集資料 - 按照 GAS 後端期望的 Key 名稱打包 */
     const payload = {
-        /* A~E 欄：工作相關 */
+        formType: "nameCard", 
+        createdAt: FORM_META.createdAt ? fmtTW(FORM_META.createdAt) : '',
+        
+        /* 1. 公司資訊 */
         company:    $("#company").value,
         team:       $("#team").value,
         workType:   $("#workType").value,
         startDate:  $("#startDate").value,
         wage:       $("#wage").value,
         
-        /* F~H 欄：基本身分 */
+        /* 2. 個人基本資訊 */
         fullName:   $("#fullName").value,
         gender:     $("#gender").value,
         nid:        $("#nid").value,
-        
-        /* I~K 欄：生日、手機、出生地 */
         birthRoc7:  $("#birthRoc7").value,
         mobile:     $("#mobile").value,       
         birthPlace: $("#birthPlace").value,
-        
-        /* L~N 欄：戶籍、居住、原民 */
         addrHouse:  $("#addrHouse").value,
         addrLive:   $("#addrLive").value,
         indigenous: $("#indigenous").value,   
-        
-        /* O~P 欄：Gmail、學歷 */
         gmail:      $("#gmail").value,
         edu:        $("#edu").value,
         
-        /* Q~U 欄：眷屬資訊 (重點區域：共 5 格) */
-        depEnable:  depEnableInput,    /* Q 欄 */
-        depRel:     depRelVal,         /* R 欄 */
-        depName:    depNameVal,        /* S 欄 */
-        depNid:     depNidVal,         /* T 欄 */
-        depBirth7:  depBirthVal,       /* U 欄 (原本位移點) */
+        /* 3. 眷屬資訊 (核心位移修正區) */
+        depEnable:  $("#depEnable").value,
+        depRel:     $("#depRel").value || "",
+        depName:    $("#depName").value || "",
+        depNid:     $("#depNid").value || "",
+        depBirth7:  $("#depBirth7")?.value || "", /* ★ 關鍵：補齊生日欄位 */
 
-        /* V~Z 欄：緊急連絡人 (V 欄開始) */
-        emgName:    $("#emgName").value,      /* V 欄 */
-        emgRel:     $("#emgRel").value,       /* W 欄 */
-        homePhone:  $("#homePhone").value,    /* X 欄 */
-        emgMobile:  $("#emgMobile").value,    /* Y 欄 */
-        emgAddr:    $("#emgAddr").value,      /* Z 欄 */
+        /* 4. 緊急連絡人 */
+        emgName:    $("#emgName").value,
+        emgRel:     $("#emgRel").value,
+        homePhone:  $("#homePhone").value,
+        emgMobile:  $("#emgMobile").value,
+        emgAddr:    $("#emgAddr").value,
         
-        /* AA~AB 欄：圖檔連結 */
+        /* 5. 檔案連結區 */
         fileFront: null, 
         fileBack: null
     };
