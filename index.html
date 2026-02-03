@@ -765,7 +765,7 @@
 
     <footer class="footer" id="footer">
     <img src="assets/MYs_logo_去背.png" alt="MYs Logo" class="footer-logo">
-      © Copyright 2025 MYs System-v1.1.3-02-03-2026-114
+      © Copyright 2025 MYs System-v1.0.4-02-03-2026-114
     </footer>
   </div>
 
@@ -842,53 +842,56 @@ async function submitData() {
     btn.textContent = "⏳ 資料傳送中，請稍後，請勿退出此介面";
     btn.disabled = true;
 
-    /* 處理眷屬邏輯：若為「否」，則補上 "-" 佔位，防止欄位位移 */
+    /* 強制精準對齊邏輯：不論選否或選是，都確保這 4 個欄位一定會發出資料 */
     const isDepEnabled = ($("#depEnable").value === "是");
+    
+    // 如果是「是」，抓輸入值；如果是「否」或是沒填，強制給 "-"
     const depRelVal   = isDepEnabled ? ($("#depRel").value.trim() || "-") : "-";
     const depNameVal  = isDepEnabled ? ($("#depName").value.trim() || "-") : "-";
     const depNidVal   = isDepEnabled ? ($("#depNid").value.trim() || "-") : "-";
     const depBirthVal = isDepEnabled ? ($("#depBirth7").value.trim() || "-") : "-";
 
-    /* 收集資料 - 按照您指定的精確順序排列 */
+    /* 收集資料 - 按照您指定的精確順序排列 (A-AB 共 28 欄) */
     const payload = {
+        /* 表單元數據 (這兩項通常寫入前兩欄或由 GAS 處理) */
         formType: "nameCard", 
         createdAt: FORM_META.createdAt ? fmtTW(FORM_META.createdAt) : '',
         
-        /* 1. 公司資訊區 (A-E) */
+        /* A~E 欄：工作相關 */
         company:    $("#company").value,
         team:       $("#team").value,
         workType:   $("#workType").value,
         startDate:  $("#startDate").value,
         wage:       $("#wage").value,
         
-        /* 2. 個人基本資訊區 (F-P) */
+        /* F~P 欄：個人資訊 (注意：手機提前、原民後移) */
         fullName:   $("#fullName").value,
         gender:     $("#gender").value,
         nid:        $("#nid").value,
         birthRoc7:  $("#birthRoc7").value,
-        mobile:     $("#mobile").value,       
+        mobile:     $("#mobile").value,       /* J 欄 */
         birthPlace: $("#birthPlace").value,
         addrHouse:  $("#addrHouse").value,
         addrLive:   $("#addrLive").value,
-        indigenous: $("#indigenous").value,   
+        indigenous: $("#indigenous").value,   /* N 欄 */
         gmail:      $("#gmail").value,
         edu:        $("#edu").value,
         
-        /* 3. 眷屬資訊區 (Q-U) - 強制佔位防止位移 */
-        depEnable:  $("#depEnable").value,
-        depRel:     depRelVal,
-        depName:    depNameVal,
-        depNid:     depNidVal,
-        depBirth7:  depBirthVal,
+        /* Q~U 欄：眷屬資訊 (核心位移修正區) */
+        depEnable:  $("#depEnable").value,    /* Q 欄 */
+        depRel:     depRelVal,                /* R 欄 (若否則填 -) */
+        depName:    depNameVal,               /* S 欄 (若否則填 -) */
+        depNid:     depNidVal,                /* T 欄 (若否則填 -) */
+        depBirth7:  depBirthVal,              /* U 欄 (若否則填 -) */
 
-        /* 4. 緊急連絡人區 (V-Z) */
-        emgName:    $("#emgName").value,
-        emgRel:     $("#emgRel").value,
-        homePhone:  $("#homePhone").value,
-        emgMobile:  $("#emgMobile").value,
-        emgAddr:    $("#emgAddr").value,
+        /* V~Z 欄：緊急連絡人 */
+        emgName:    $("#emgName").value,      /* V 欄 */
+        emgRel:     $("#emgRel").value,       /* W 欄 */
+        homePhone:  $("#homePhone").value,     /* X 欄 */
+        emgMobile:  $("#emgMobile").value,    /* Y 欄 */
+        emgAddr:    $("#emgAddr").value,      /* Z 欄 */
         
-        /* 5. 檔案連結區 (AA-AB) */
+        /* AA~AB 欄：檔案連結 */
         fileFront: null, 
         fileBack: null
     };
@@ -907,7 +910,7 @@ async function submitData() {
         const res = await response.json();
 
         if (res.status === 'ok') {
-            showStep(13); /* 成功 -> 跳至第13頁 */
+            showStep(13); 
         } else {
             alert("❌ " + (res.status === 'duplicate' ? "你/妳已經填寫過" : "錯誤: " + res.message));
             btn.textContent = originalText;
@@ -1192,7 +1195,6 @@ function validatePage(n, submit=false){
         const nInvalid = $("#depName").value.trim()==="";
         $("#errDepName").style.display = (nInvalid && shouldShowErr("depName", submit)) ? "block" : "none";
         if(nInvalid) ok=false;
-        /* 眷屬身分證、生日不強制檢查 */
         $("#errDepNid").style.display = "none";
         $("#errDepBirth7").style.display = "none";
       } else {
@@ -1231,9 +1233,8 @@ function validatePage(n, submit=false){
 function updateNavState(){
   const btnPrev = $("#btnPrev"), btnNext = $("#btnNext");
   const onLast = currentPage===TOTAL_STEPS;
-  const isValid = validatePage(currentPage, false); // 檢查當頁是否合格
+  const isValid = validatePage(currentPage, false);
 
-  /* 上一頁：第一頁隱藏；最後一頁隱藏 */
   if(btnPrev){
       if(currentPage<=1 || onLast){
           btnPrev.style.display="none";
@@ -1243,11 +1244,6 @@ function updateNavState(){
       }
   }
 
-  /* 下一頁：
-     規則1: 最後一頁(13)隱藏
-     規則2: 第12頁(核檢區)也必須隱藏(因為該頁只有提交鈕)
-     規則3: 若沒填好(isValid=false) 則直接隱藏 (none)，否則顯示
-  */
   if(btnNext){
       if(onLast || currentPage===12 || !isValid){
         btnNext.style.display = "none";
@@ -1257,7 +1253,6 @@ function updateNavState(){
       }
   }
   
-  /* 第12頁：提交按鈕控制 (需全勾選才啟用) */
   if(currentPage === 12){
       const btnSubmit = $("#btnSubmit");
       const isValid12 = validatePage(12, false);
@@ -1337,7 +1332,6 @@ function bindLiveValidation(){
   bindPreview("#idBack","#nameBackTxt","#thumbBack");
   ["#chk1","#chk2","#chk3","#chk4"].forEach(sel=> $(sel)?.addEventListener('change', updateNavState));
 
-  /* 第12頁 Checkbox 監聽 */
   ["#preA","#preB","#preC","#preD","#preE","#preF","#preG"].forEach(sel=>{
     $(sel)?.addEventListener('change', ()=>{ updateNavState(); });
   });
