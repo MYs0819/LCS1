@@ -422,6 +422,7 @@
             <option>Drunk Caffee 爛醉咖啡</option>
             <option>FIZZ FIZZ.TEIPEI</option>
             <option>Social Company 有趣人類社交局</option>
+            <option>錢夫人時尚鍋物</option>
           </select>
           <div class="error" id="errcompany">⚠️ 尚未選擇公司</div>
         </div>
@@ -765,7 +766,7 @@
 
     <footer class="footer" id="footer">
     <img src="assets/MYs_logo_去背.png" alt="MYs Logo" class="footer-logo">
-      © Copyright 2025 MYs System-v1.1.4-02-22-2026-114
+      © Copyright 2025 MYs System-v1.1.4.1-06-13-2026-114
     </footer>
   </div>
 
@@ -773,7 +774,7 @@
 /* --------系統常數（可調）-------- */
 const TOTAL_STEPS = 13;  /* 總頁數（可調） */
 /* GAS 網址 */
-const GAS_URL = "https://script.google.com/macros/s/AKfycbzYyBkgbY6BdQqnwaHK9E57h8XZ4C6MeSmR0N1Q8RXP_7IehZKeAimfZsGnodXf07VY/exec";
+const GAS_URL = "https://script.google.com/macros/s/AKfycbz17bpllO0xVHY7h7KCVc4h9Tv25Z8SSHHKgQBz7i5UgGeUVue3xlxA-9QhJdfAvhlp/exec";
 
 const $  = (sel) => document.querySelector(sel);
 const $$ = (sel) => document.querySelectorAll(sel);
@@ -794,7 +795,7 @@ function updateStampUI(){
 }
 
 /* ====== 密碼進入遮罩 ====== */
-const PASSWORDS = ["MYsDC714", "MYsFZ714", "MYsSC714"]; 
+const PASSWORDS = ["MYsDC714", "MYsFZ714", "MYsSC714", "MYsML714"]; 
 (function passGateInit(){
   const gate = $("#passGate"), pwd = $("#gatePwd"), btn = $("#gatePwdStart"), err = $("#gatePwdErr");
   const togglePwdButton = $("#togglePwdVisibility");
