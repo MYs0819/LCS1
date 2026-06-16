@@ -206,6 +206,18 @@
   input::placeholder { font-size: var(--placeholder-size); color: var(--muted); }
   input:focus, select:focus { border-color: var(--control-focus); box-shadow: 0 0 0 3px rgba(96,165,250,.25); }
 
+  /* ====== 解決 Safari/Chrome 自動填入 (Autofill) 變成白底的問題 ====== */
+  input:-webkit-autofill,
+  input:-webkit-autofill:hover, 
+  input:-webkit-autofill:focus, 
+  input:-webkit-autofill:active,
+  select:-webkit-autofill {
+    -webkit-box-shadow: 0 0 0 30px var(--control-bg) inset !important;
+    -webkit-text-fill-color: var(--muted) !important;
+    transition: background-color 5000s ease-in-out 0s;
+    caret-color: var(--muted);
+  }
+
   .error { color: var(--danger); margin-top: 6px; font-size: var(--error-size); display:none; }
   
   /* Radio Label 字體大小，跟隨 content-size (15px)  */
@@ -903,7 +915,9 @@ async function submitData() {
         if (res.status === 'ok') {
             showStep(13); 
         } else {
-            alert("❌ " + (res.status === 'duplicate' ? "你/妳已經填寫過" : "錯誤: " + res.message));
+            // ★ 修復：若 GAS 後端未提供 res.message，改為抓取其他可能的錯誤屬性，或直接印出完整回傳內容，幫助除錯
+            const realErrorMsg = res.message || res.error || res.err || JSON.stringify(res);
+            alert("❌ " + (res.status === 'duplicate' ? "你/妳已經填寫過" : "錯誤: " + realErrorMsg));
             btn.textContent = originalText;
             btn.disabled = false;
         }
