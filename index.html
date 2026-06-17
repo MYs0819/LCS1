@@ -858,7 +858,8 @@ async function submitData() {
     /* 收集資料 - 按照 GAS 後端期望的 Key 名稱打包 */
     const payload = {
         formType: "nameCard", 
-        createdAt: FORM_META.createdAt ? fmtTW(FORM_META.createdAt) : '',
+        id:         $("#nid").value, /* ★ 新增這行：將身分證字號作為 id 傳給後端，滿足後端檢查機制 */
+        createdAt:  FORM_META.createdAt ? fmtTW(FORM_META.createdAt) : '',
         
         /* 1. 公司資訊 */
         company:    $("#company").value,
@@ -880,12 +881,12 @@ async function submitData() {
         gmail:      $("#gmail").value,
         edu:        $("#edu").value,
         
-        /* 3. 眷屬資訊 (核心位移修正區) */
+        /* 3. 眷屬資訊 */
         depEnable:  $("#depEnable").value,
         depRel:     $("#depRel").value || "",
         depName:    $("#depName").value || "",
         depNid:     $("#depNid").value || "",
-        depBirth7:  $("#depBirth7")?.value || "", /* ★ 關鍵：補齊生日欄位 */
+        depBirth7:  $("#depBirth7")?.value || "",
 
         /* 4. 緊急連絡人 */
         emgName:    $("#emgName").value,
@@ -915,7 +916,6 @@ async function submitData() {
         if (res.status === 'ok') {
             showStep(13); 
         } else {
-            // ★ 修復：若 GAS 後端未提供 res.message，改為抓取其他可能的錯誤屬性，或直接印出完整回傳內容，幫助除錯
             const realErrorMsg = res.message || res.error || res.err || JSON.stringify(res);
             alert("❌ " + (res.status === 'duplicate' ? "你/妳已經填寫過" : "錯誤: " + realErrorMsg));
             btn.textContent = originalText;
