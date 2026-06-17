@@ -7,7 +7,7 @@
 
   <style>
       :root {
-          /* -----------GAS部署網址在789行------------ */
+          /* -----------GAS部署網址在776行------------ */
           /* --------系統共用常數（可全站調整）-------- */
           --card-w: 980px;        /* 表單面板最大寬度（可調） */
           --radius: 16px;         /* 面板圓角（可調） */
@@ -65,9 +65,9 @@
     --panel-bg: linear-gradient(0deg,rgba(43,37,37,1) 0%, rgba(0,0,0,1) 100%);
         
     /* --------第10頁：範例圖片尺寸/外觀（可調）-------- */
-    --sample-gap: 10px;          /* 圖片之間的間距（可調） */
-    --sample-max-h: 180px;       /* 圖片最大高度（可調） */
-    --sample-pad: 8px;           /* 每張圖外框內距（可調） */
+    --sample-gap: 10px;         /* 圖片之間的間距（可調） */
+    --sample-max-h: 180px;      /* 圖片最大高度（可調） */
+    --sample-pad: 8px;          /* 每張圖外框內距（可調） */
     --sample-bg: rgba(255,255,255,0.04); /* 圖片外框底色（可調） */
     --sample-radius: 12px;      /* 圖片外框圓角（可調） */
   }
@@ -205,18 +205,6 @@
   }
   input::placeholder { font-size: var(--placeholder-size); color: var(--muted); }
   input:focus, select:focus { border-color: var(--control-focus); box-shadow: 0 0 0 3px rgba(96,165,250,.25); }
-
-  /* ====== 解決 Safari/Chrome 自動填入 (Autofill) 變成白底的問題 ====== */
-  input:-webkit-autofill,
-  input:-webkit-autofill:hover, 
-  input:-webkit-autofill:focus, 
-  input:-webkit-autofill:active,
-  select:-webkit-autofill {
-    -webkit-box-shadow: 0 0 0 30px var(--control-bg) inset !important;
-    -webkit-text-fill-color: var(--muted) !important;
-    transition: background-color 5000s ease-in-out 0s;
-    caret-color: var(--muted);
-  }
 
   .error { color: var(--danger); margin-top: 6px; font-size: var(--error-size); display:none; }
   
@@ -408,7 +396,7 @@
 
     <main class="content" id="content">
       <section class="step active" data-page="1" id="step-1">
-        <h2>   ⏰ 注意事項</h2>
+        <h2>　　 ⏰ 注意事項</h2>
         <ol class="note-list">
           <li>請依照每頁表單指示執行填寫.</li>
           <li>上傳之個人身分文件悉依相關法令規範辦理保存.</li>
@@ -434,7 +422,7 @@
             <option>Drunk Caffee 爛醉咖啡</option>
             <option>FIZZ FIZZ.TEIPEI</option>
             <option>Social Company 有趣人類社交局</option>
-            <option>錢夫人時尚鍋物_三重集成店</option>
+            <option>錢夫人時尚鍋物_三重店</option>
           </select>
           <div class="error" id="errcompany">⚠️ 尚未選擇公司</div>
         </div>
@@ -477,7 +465,7 @@
       </section>
 
       <section class="step" data-page="3" id="step-3">
-        <h2>  🪧 個人資訊</h2>
+        <h2>　　🪧 個人資訊</h2>
         <ol class="note-list">
           <li>請依照每頁問題指示執行填寫.</li>
           <li>填寫表單若遇到困難,請向承辦人提出禮貌詢問.</li>
@@ -571,7 +559,7 @@
       </section>
 
       <section class="step" data-page="7" id="step-7">
-        <h2>  🚨 其他資訊</h2>
+        <h2>　　🚨 其他資訊</h2>
         <ol class="note-list">
           <li>請依照每頁問題指示執行填寫.</li>
           <li>填寫表單若遇到困難,請向承辦人提出禮貌詢問.</li>
@@ -621,11 +609,13 @@
 
       <section class="step" data-page="9" id="step-9">
         <div class="row">
-          <label for="depEnable">© 眷屬是否依附加保</label>
+          <label for="depEnable">© 健保加保資訊</label>
           <select id="depEnable">
             <option value="" selected disabled>請選擇</option>
-            <option>是</option>
-            <option>否</option>
+            <option>已由其他工作單位投保</option>
+            <option>以眷屬身分依附家人投保</option>
+            <option>目前無其他投保單位</option>
+            <option>無</option>
           </select>
           <div class="error" id="errDepEnable">⚠️ 請選擇是否眷屬依附加保</div>
         </div>
@@ -658,7 +648,7 @@
       </section>
 
       <section class="step" data-page="10" id="step-10">
-        <h2>  ⏫ 上傳檔案</h2>
+        <h2>　　⏫ 上傳檔案</h2>
         <ol class="note-list">
           <li>上傳之個人身分文件.</li>
           <li>有正確及及錯誤範例.</li>
@@ -761,7 +751,7 @@
           <hr style="border:0;border-top:1px solid var(--border);margin:10px 0;">
           <div>系統已收到資料，將進入處理排程</div>
           <div style="margin-top:10px;color:var(--muted);font-size:11px;">
-            建立：<span id="stampCreated">—</span> 提交：<span id="stampUpdated">—</span>
+            建立：<span id="stampCreated">—</span>　提交：<span id="stampUpdated">—</span>
           </div>
         </div>
       </section>
@@ -778,7 +768,7 @@
 
     <footer class="footer" id="footer">
     <img src="assets/MYs_logo_去背.png" alt="MYs Logo" class="footer-logo">
-      © Copyright 2025 MYs System-v1.1.4.1-06-13-2026-114
+      © Copyright 2025 MYs System-v1.0.100-02-22-2026
     </footer>
   </div>
 
@@ -786,7 +776,7 @@
 /* --------系統常數（可調）-------- */
 const TOTAL_STEPS = 13;  /* 總頁數（可調） */
 /* GAS 網址 */
-const GAS_URL = "https://script.google.com/macros/s/AKfycbzpDxBJL50-MnOLIA-k1Jv9Q4a43QcO5thcwMjd-DS1OUTZvUmJ_ZxfvqGhW_o9b-Ht/exec";
+const GAS_URL = "https://script.google.com/macros/s/AKfycbzM89QO-T88ugmQXPobRzTaFXaIqMcekpahWIY_bIJNwLzNydqTDWSdHox6ww_YL3H2/exec";
 
 const $  = (sel) => document.querySelector(sel);
 const $$ = (sel) => document.querySelectorAll(sel);
@@ -807,7 +797,7 @@ function updateStampUI(){
 }
 
 /* ====== 密碼進入遮罩 ====== */
-const PASSWORDS = ["MYsDC714", "MYsFZ714", "MYsSC714", "MYsML714", "0819", "1015"]; 
+const PASSWORDS = ["MYsDC714", "MYsFZ714", "MYsSC714"]; 
 (function passGateInit(){
   const gate = $("#passGate"), pwd = $("#gatePwd"), btn = $("#gatePwdStart"), err = $("#gatePwdErr");
   const togglePwdButton = $("#togglePwdVisibility");
@@ -855,47 +845,59 @@ async function submitData() {
     btn.textContent = "⏳ 資料傳送中，請稍後，請勿退出此介面";
     btn.disabled = true;
 
-    /* 收集資料 - 按照 GAS 後端期望的 Key 名稱打包 */
+    /* 處理眷屬邏輯：強制佔位機制 */
+    const depEnableInput = $("#depEnable").value;
+    const isDepEnabled = (depEnableInput === "是");
+    
+    // 如果選「否」，確保後續 4 個欄位 (R, S, T, U) 都是 "-"，絕對不能跳過
+    const depRelVal   = isDepEnabled ? ($("#depRel").value.trim() || "-") : "-";
+    const depNameVal  = isDepEnabled ? ($("#depName").value.trim() || "-") : "-";
+    const depNidVal   = isDepEnabled ? ($("#depNid").value.trim() || "-") : "-";
+    const depBirthVal = isDepEnabled ? ($("#depBirth7").value.trim() || "-") : "-";
+
+    /* 收集資料 - 按照您的試算表「勞工名卡」分頁 A-AB 精確對齊 */
     const payload = {
-        formType: "nameCard", 
-        id:         $("#nid").value, /* ★ 新增這行：將身分證字號作為 id 傳給後端，滿足後端檢查機制 */
-        createdAt:  FORM_META.createdAt ? fmtTW(FORM_META.createdAt) : '',
-        
-        /* 1. 公司資訊 */
+        /* A~E 欄：工作相關 */
         company:    $("#company").value,
         team:       $("#team").value,
         workType:   $("#workType").value,
         startDate:  $("#startDate").value,
         wage:       $("#wage").value,
         
-        /* 2. 個人基本資訊 */
+        /* F~H 欄：基本身分 */
         fullName:   $("#fullName").value,
         gender:     $("#gender").value,
         nid:        $("#nid").value,
+        
+        /* I~K 欄：生日、手機、出生地 */
         birthRoc7:  $("#birthRoc7").value,
         mobile:     $("#mobile").value,       
         birthPlace: $("#birthPlace").value,
+        
+        /* L~N 欄：戶籍、居住、原民 */
         addrHouse:  $("#addrHouse").value,
         addrLive:   $("#addrLive").value,
         indigenous: $("#indigenous").value,   
+        
+        /* O~P 欄：Gmail、學歷 */
         gmail:      $("#gmail").value,
         edu:        $("#edu").value,
         
-        /* 3. 眷屬資訊 */
-        depEnable:  $("#depEnable").value,
-        depRel:     $("#depRel").value || "",
-        depName:    $("#depName").value || "",
-        depNid:     $("#depNid").value || "",
-        depBirth7:  $("#depBirth7")?.value || "",
+        /* Q~U 欄：眷屬資訊 (重點區域：共 5 格) */
+        depEnable:  depEnableInput,    /* Q 欄 */
+        depRel:     depRelVal,         /* R 欄 */
+        depName:    depNameVal,        /* S 欄 */
+        depNid:     depNidVal,         /* T 欄 */
+        depBirth7:  depBirthVal,       /* U 欄 (原本位移點) */
 
-        /* 4. 緊急連絡人 */
-        emgName:    $("#emgName").value,
-        emgRel:     $("#emgRel").value,
-        homePhone:  $("#homePhone").value,
-        emgMobile:  $("#emgMobile").value,
-        emgAddr:    $("#emgAddr").value,
+        /* V~Z 欄：緊急連絡人 (V 欄開始) */
+        emgName:    $("#emgName").value,      /* V 欄 */
+        emgRel:     $("#emgRel").value,       /* W 欄 */
+        homePhone:  $("#homePhone").value,    /* X 欄 */
+        emgMobile:  $("#emgMobile").value,    /* Y 欄 */
+        emgAddr:    $("#emgAddr").value,      /* Z 欄 */
         
-        /* 5. 檔案連結區 */
+        /* AA~AB 欄：圖檔連結 */
         fileFront: null, 
         fileBack: null
     };
@@ -916,8 +918,7 @@ async function submitData() {
         if (res.status === 'ok') {
             showStep(13); 
         } else {
-            const realErrorMsg = res.message || res.error || res.err || JSON.stringify(res);
-            alert("❌ " + (res.status === 'duplicate' ? "你/妳已經填寫過" : "錯誤: " + realErrorMsg));
+            alert("❌ " + (res.status === 'duplicate' ? "你/妳已經填寫過" : "錯誤: " + res.message));
             btn.textContent = originalText;
             btn.disabled = false;
         }
@@ -1041,10 +1042,9 @@ function updateHeaderStep(){
 function lockAllAndHideNav(){
   IS_LOCKED = true;
   document.querySelectorAll('input, select, button, textarea').forEach(el=>{ el.disabled = true; });
-  const prev=$("#btnPrev"), next=$("#btnNext"), actionbar=$("#actionbar");
+  const prev=$("#btnPrev"), next=$("#btnNext");
   if(prev){ prev.style.display="none"; }
   if(next){ next.style.display="none"; }
-  if(actionbar){ actionbar.style.display="none"; }
 }
 
 function showStep(pageNumber){
@@ -1059,7 +1059,7 @@ function showStep(pageNumber){
 
   if(pageNumber===TOTAL_STEPS){
     setUpdatedNow();
-    setTimeout(()=>{ lockAllAndHideNav(); }, 0);
+    setTimeout(()=>{ lockAllAndHideNav(); updateNavState(); }, 0);
   }
 }
 
