@@ -396,7 +396,7 @@
 
     <main class="content" id="content">
       <section class="step active" data-page="1" id="step-1">
-        <h2>　　 ⏰ 注意事項</h2>
+        <h2>   ⏰ 注意事項</h2>
         <ol class="note-list">
           <li>請依照每頁表單指示執行填寫.</li>
           <li>上傳之個人身分文件悉依相關法令規範辦理保存.</li>
@@ -465,7 +465,7 @@
       </section>
 
       <section class="step" data-page="3" id="step-3">
-        <h2>　　🪧 個人資訊</h2>
+        <h2>  🪧 個人資訊</h2>
         <ol class="note-list">
           <li>請依照每頁問題指示執行填寫.</li>
           <li>填寫表單若遇到困難,請向承辦人提出禮貌詢問.</li>
@@ -515,7 +515,7 @@
       <section class="step" data-page="5" id="step-5">
         <div class="row">
           <label for="birthRoc7">© 民國出生年月日 <small>⏍ 請以yyyMMdd格式填寫,共7碼</small></label>
-          <input id="birthRoc7" type="text" placeholder="範例 ☛1121008或0750819" />
+          <input id="birthRoc7" type="text" placeholder="範例 ☛1121008 or 0750819" />
           <div class="error" id="errBirthRoc7">⚠️ 格式須為7碼,yyyMMdd</div>
         </div>
 
@@ -559,7 +559,7 @@
       </section>
 
       <section class="step" data-page="7" id="step-7">
-        <h2>　　🚨 其他資訊</h2>
+        <h2>  🚨 其他資訊</h2>
         <ol class="note-list">
           <li>請依照每頁問題指示執行填寫.</li>
           <li>填寫表單若遇到困難,請向承辦人提出禮貌詢問.</li>
@@ -614,10 +614,10 @@
             <option value="" selected disabled>請選擇</option>
             <option>已由其他工作單位投保</option>
             <option>以眷屬身分依附家人投保</option>
-            <option>目前無其他投保單位</option>
-            <option>無</option>
+            <option>無投保單位,本人須加健保</option>
+            <option>無投保單位,本人須加健保且有眷屬須依附</option>
           </select>
-          <div class="error" id="errDepEnable">⚠️ 請選擇是否眷屬依附加保</div>
+          <div class="error" id="errDepEnable">⚠️ 請選擇加保方式</div>
         </div>
 
         <div id="depFields" style="display:none;">
@@ -648,7 +648,7 @@
       </section>
 
       <section class="step" data-page="10" id="step-10">
-        <h2>　　⏫ 上傳檔案</h2>
+        <h2>  ⏫ 上傳檔案</h2>
         <ol class="note-list">
           <li>上傳之個人身分文件.</li>
           <li>有正確及及錯誤範例.</li>
@@ -751,7 +751,7 @@
           <hr style="border:0;border-top:1px solid var(--border);margin:10px 0;">
           <div>系統已收到資料，將進入處理排程</div>
           <div style="margin-top:10px;color:var(--muted);font-size:11px;">
-            建立：<span id="stampCreated">—</span>　提交：<span id="stampUpdated">—</span>
+            建立：<span id="stampCreated">—</span> 提交：<span id="stampUpdated">—</span>
           </div>
         </div>
       </section>
@@ -797,7 +797,7 @@ function updateStampUI(){
 }
 
 /* ====== 密碼進入遮罩 ====== */
-const PASSWORDS = ["MYsDC714", "MYsFZ714", "MYsSC714"]; 
+const PASSWORDS = ["MYsDC714", "MYsFZ714", "MYsSC714", "MYsML714", "0819", "1015"]; 
 (function passGateInit(){
   const gate = $("#passGate"), pwd = $("#gatePwd"), btn = $("#gatePwdStart"), err = $("#gatePwdErr");
   const togglePwdButton = $("#togglePwdVisibility");
@@ -847,7 +847,7 @@ async function submitData() {
 
     /* 處理眷屬邏輯：強制佔位機制 */
     const depEnableInput = $("#depEnable").value;
-    const isDepEnabled = (depEnableInput === "是");
+    const isDepEnabled = (depEnableInput === "無投保單位,本人須加健保且有眷屬須依附");
     
     // 如果選「否」，確保後續 4 個欄位 (R, S, T, U) 都是 "-"，絕對不能跳過
     const depRelVal   = isDepEnabled ? ($("#depRel").value.trim() || "-") : "-";
@@ -857,6 +857,8 @@ async function submitData() {
 
     /* 收集資料 - 按照您的試算表「勞工名卡」分頁 A-AB 精確對齊 */
     const payload = {
+        formType: "nameCard", /* 補上此欄位以利後端 GAS 識別分頁 */
+        
         /* A~E 欄：工作相關 */
         company:    $("#company").value,
         team:       $("#team").value,
@@ -1191,7 +1193,7 @@ function validatePage(n, submit=false){
       const val = $("#depEnable").value;
       const enInvalid = !val;
       $("#errDepEnable").style.display = (enInvalid && shouldShowErr("depEnable", submit)) ? "block" : "none";
-      const show = (val==="是");
+      const show = (val==="無投保單位,本人須加健保且有眷屬須依附");
       $("#depFields").style.display = show ? "block" : "none";
       if(enInvalid) ok=false;
       if(show){
